@@ -41,8 +41,17 @@ function playround(player_selection,computer_selection){
     }
 }
 
+function playgame(){
+    let keep_playing = true;
 
-let player_selection = getplayerselection();
-let computer_selection = getcomputerchoice();
+    while(keep_playing){
+        let player_selection = getplayerselection();
+        let computer_selection = getcomputerchoice();
 
-playround(player_selection,computer_selection);
+        playround(player_selection,computer_selection);
+        
+        keep_playing = prompt("Please enter either true to keep playing or false to stop: ", "true");
+    }
+}
+
+playgame();
