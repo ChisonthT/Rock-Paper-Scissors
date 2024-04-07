@@ -1,4 +1,4 @@
-function getcomputerchoice(){
+function getComputerChoice(){
     let com_choice = Math.floor(Math.random() * 3);
     let result;
     switch(com_choice){
@@ -9,42 +9,102 @@ function getcomputerchoice(){
             result = 'Paper';
             break;
         default:
-            result = 'Scissor';
+            result = 'Scissors';
     }
 
     return result; 
 }
 
-function getplayerselection(){
-}
+function gameReset(){
 
-function playround(player_selection,computer_selection){
-    p_s = player_selection.toUpperCase();
-    c_s = computer_selection.toUpperCase();
+    let pScore = document.querySelector('#playerScore');
+    let cScore = document.querySelector('#computerScore');
 
-    if (p_s == c_s){
-        console.log("It's a draw!");
-    }else if ((p_s == 'ROCK') && (c_s == 'PAPER')){
-        console.log("You LOSE!! Paper beats Rock.");
-    }else if ((p_s == 'PAPER') && (c_s == 'SCISSOR')){
-        console.log("You LOSE!! Scissor beats paper.");
-    }else if ((p_s == 'SCISSOR') && (c_s == 'ROCK')){
-        console.log("You LOSE!! Scissor beats Rock.");
-    }else if ((p_s == 'ROCK') && (c_s == 'SCISSOR')){
-        console.log("You WIN!! Rock beats scissor.");
-    }else if ((p_s == 'SCISSOR') && (c_s == 'PAPER')){
-        console.log("You WIN!! Scissor beats paper.");
-    }else{
-        console.log("You WIN!! Paper beats rock.");
-    }
-}
-
-function playgame(){
-
-    let player_selection = getplayerselection();
-    let computer_selection = getcomputerchoice();
+    pScore.textContent = 0;
+    cScore.textContent = 0;
     
-    playround(player_selection,computer_selection);
+    pScore.dataset.value = 0;
+    cScore.dataset.value = 0;
 }
 
-playgame();
+function playRound(player_selection,computer_selection){
+
+    let pScore = document.querySelector('#playerScore');
+    let cScore = document.querySelector('#computerScore');
+
+    let pValue = pScore.dataset.value;
+    let cValue = cScore.dataset.value;
+
+    let thing = pScore.textContent;
+    
+
+    if ((player_selection == 'Rock') && (computer_selection == 'Paper')){
+        cValue++;
+    }
+    
+    if ((player_selection == 'Paper')&&(computer_selection == 'Scissors')){
+        cValue++;
+    }
+    
+    if ((player_selection == 'Scissors')&&(computer_selection == 'Rock')){
+        cValue++;
+    }
+    
+    if((player_selection == 'Rock')&&(computer_selection == 'Scissors')){
+        pValue++;
+    }
+    
+    if((player_selection == 'Paper')&&(computer_selection == 'Rock')){
+        pValue++;
+    }
+    
+    if ((player_selection == 'Scissors')&&(computer_selection =='Paper')){
+        pValue++;
+    }
+
+    pScore.dataset.value = pValue;
+    cScore.dataset.value = cValue;
+
+    pScore.textContent = pValue;
+    cScore.textContent = cValue;
+
+    console.log(player_selection);
+    console.log(computer_selection);
+}
+
+function playGame(){
+
+    let game_buttons = document.querySelector('#game_btns');
+
+    game_buttons.addEventListener('click', (e) => {
+        let target = e.target;
+        let pScore = document.querySelector('#playerScore');
+        let cScore = document.querySelector('#computerScore');
+
+        switch(target.id) {
+            case 'newGame':
+                gameReset();
+                break;
+
+            case 'Rock':
+            case 'Paper':
+            case 'Scissors':
+                let c_choice = getComputerChoice();
+                playRound(target.id,c_choice);
+                break;
+        }
+
+        if (pScore.dataset.value == 5){
+            alert("You won!!");
+            gameReset();
+        }
+        
+        if (cScore.dataset.value == 5){
+            alert("You Lost!!");
+            gameReset();
+        }
+    })
+}
+
+playGame();
+
